@@ -23,8 +23,8 @@
         'categories' => Category::all(),
         'currentCategory' => Category::firstWhere(
           'slug',
-          request('category'
-          ))
+          request('category')
+        )
       ]);
     }
   }
