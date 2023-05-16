@@ -16,11 +16,13 @@
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-      'name',
-      'email',
-      'password',
-    ];
+//    protected $fillable = [
+//      'name',
+//      'email',
+//      'password',
+//    ];
+
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -40,6 +42,10 @@
     protected $casts = [
       'email_verified_at' => 'datetime',
     ];
+
+    public function setPasswordAttribute($password): void {
+      $this->attributes['password'] = bcrypt($password);
+    }
 
     public function posts() {
       return $this->hasMany(Post::class);
