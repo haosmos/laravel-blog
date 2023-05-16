@@ -26,7 +26,7 @@
       return view('posts.index', [
         'posts' => Post::latest()
                        ->filter(request(['search', 'category', 'author']))
-                       ->get()
+                       ->paginate(6)->withQueryString()
       ]);
     }
 
