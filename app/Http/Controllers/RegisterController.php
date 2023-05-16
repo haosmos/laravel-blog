@@ -22,6 +22,6 @@
 
       User::create($attributes);
 
-      return redirect('/');
+      return redirect('/')->with('success', 'Your account has been created.');
     }
   }
