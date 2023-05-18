@@ -33,4 +33,8 @@
     public function show(Post $post) {
       return view('posts.show', compact('post'));
     }
+
+    public function create() {
+      return view('posts.create');
+    }
   }
