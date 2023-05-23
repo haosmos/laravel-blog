@@ -15,8 +15,8 @@
      * @return mixed
      */
     public function handle(Request $request, Closure $next) {
-      if (auth()->user()?->username !== 'VIT') {
-        abort(Response::HTTP_FORBIDDEN);
+      if (auth()->user()?->username !== 'rob') {
+        abort(Response::HTTP_FORBIDDEN, 'something wrong here!!!');
       }
 
       return $next($request);

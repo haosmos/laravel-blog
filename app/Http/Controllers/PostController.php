@@ -2,25 +2,8 @@
 
   namespace App\Http\Controllers;
 
-  use App\Models\Category;
   use App\Models\Post;
   use Illuminate\Validation\Rule;
-
-//  class PostController extends Controller {
-//    public function index() {
-//      return view('posts.index', [
-//        'posts' => Post::latest()
-//                       ->filter(request(['search', 'category', 'author']))
-//                       ->get()
-//      ]);
-//    }
-//
-//    public function show(Post $posts) {
-//      return view('posts.show', compact('posts'));
-//    }
-//  }
-
-  ###
 
   class PostController extends Controller {
     public function index() {
@@ -35,15 +18,19 @@
       return view('posts.show', compact('post'));
     }
 
-    public function create()
-    {
+    public function create() {
       return view('posts.create');
     }
 
-    public function store()
-    {
+    public function store() {
+
+      // $path = request()->file('thumbnail')->store('thumbnails', 'public');
+
+      // dd($path);
+
       $attributes = request()->validate([
         'title' => 'required',
+        'thumbnail' => 'required|image',
         'slug' => ['required', Rule::unique('posts', 'slug')],
         'excerpt' => 'required',
         'body' => 'required',
@@ -51,6 +38,10 @@
       ]);
 
       $attributes['user_id'] = auth()->id();
+      $attributes['thumbnail'] = request()->file('thumbnail')->store(
+        'thumbnails',
+        'public'
+      );
 
       Post::create($attributes);
 

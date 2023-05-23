@@ -17,6 +17,7 @@ services:
         working_dir: /var/www
         volumes:
             - ./:/var/www
+            - ./storage:/var/www/storage
             - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
 
     #Nginx Service
@@ -30,6 +31,7 @@ services:
 #            - "443:443"
         volumes:
             - ./:/var/www
+            - ./storage:/var/www/storage
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
 
     #MySQL Service
