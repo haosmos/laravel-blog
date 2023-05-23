@@ -17,13 +17,12 @@
     }
 
     public function store() {
-
-      $attributes = array_merge($this->validatePost(), [
-        'user_id' => request()->user()->id,
-        'thumbnail' => request()->file('thumbnail')->store('thumbnails')
-      ]);
-
-      Post::create($attributes);
+      Post::create(
+        array_merge($this->validatePost(), [
+          'user_id' => request()->user()->id,
+          'thumbnail' => request()->file('thumbnail')->store('thumbnails')
+        ])
+      );
 
       return redirect('/');
     }
@@ -33,19 +32,10 @@
     }
 
     public function update(Post $post) {
-      $attributes = request()->validate([
-        'title' => 'required',
-        'thumbnail' => $post->exists ? ['image'] : ['required', 'image'],
-        'slug' => ['required', Rule::unique('posts', 'slug')->ignore($post)],
-        'excerpt' => 'required',
-        'body' => 'required',
-        'category_id' => ['required', Rule::exists('categories', 'id')]
-      ]);
+      $attributes = $this->validatePost($post);
 
       if ($attributes['thumbnail'] ?? false) {
-        $attributes['thumbnail'] = request()
-          ->file('thumbnail')
-          ->store('thumbnails');
+        $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
       }
 
       $post->update($attributes);
@@ -59,12 +49,7 @@
       return back()->with('success', 'Post Deleted!');
     }
 
-    /**
-     * @param Post $post
-     * @return array
-     */
     protected function validatePost(?Post $post = null): array {
-
       $post ??= new Post();
 
       return request()->validate([
