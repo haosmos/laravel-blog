@@ -15,36 +15,8 @@
     }
 
     public function show(Post $post) {
-      return view('posts.show', compact('post'));
-    }
-
-    public function create() {
-      return view('posts.create');
-    }
-
-    public function store() {
-
-      // $path = request()->file('thumbnail')->store('thumbnails', 'public');
-
-      // dd($path);
-
-      $attributes = request()->validate([
-        'title' => 'required',
-        'thumbnail' => 'required|image',
-        'slug' => ['required', Rule::unique('posts', 'slug')],
-        'excerpt' => 'required',
-        'body' => 'required',
-        'category_id' => ['required', Rule::exists('categories', 'id')]
+      return view('posts.show', [
+        'post' => $post
       ]);
-
-      $attributes['user_id'] = auth()->id();
-      $attributes['thumbnail'] = request()->file('thumbnail')->store(
-        'thumbnails',
-        'public'
-      );
-
-      Post::create($attributes);
-
-      return redirect('/');
     }
   }
